@@ -1,5 +1,3 @@
-
-
 <div align="center">
   <h1>AccessTwin ♿🏛️</h1>
   <h3><i>"Find your destination. Follow the smartest route."</i></h3>
@@ -60,10 +58,10 @@ In India, millions of citizens with physical or visual impairments struggle to n
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="https://github.com/user-attachments/assets/41c2be88-46f5-43ad-b09b-4913dec15053" width="100%" alt="TwinGram Feed" />
+      <img src="https://github.com/user-attachments/assets/2bc25fa2-aa4e-4e72-9c6b-575c89cbc8a3" width="100%" alt="TwinGram Feed" />
     </td>
     <td width="50%" align="center">
-      <img src="https://github.com/user-attachments/assets/66bc54a9-4781-4d2a-9fe7-43964c4aeae0" width="100%" alt="AI Detection" />
+      <img src="https://github.com/user-attachments/assets/d3fef20a-043d-4b2c-86ca-c4633cddad2f" width="100%" alt="AI Detection" />
     </td>
   </tr>
 </table>
