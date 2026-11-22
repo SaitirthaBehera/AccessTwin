@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Session } from '@supabase/supabase-js';
 import { 
   Building2, 
@@ -226,28 +227,63 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       
-      {isDrawerOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
+      {/* 📱 MOBILE RIGHT-SIDE SLIDE-OUT DRAWER (Rendered via Portal for 100% Solid Background) */}
+      {isDrawerOpen && typeof document !== 'undefined' && createPortal(
+        <div 
+          className="fixed inset-0 z-[99999] md:hidden"
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99999 }}
+        >
           {/* Dark Backdrop Overlay */}
           <div 
-            className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity duration-300"
+            className="fixed inset-0"
+            style={{ 
+              position: 'fixed', 
+              top: 0, 
+              left: 0, 
+              right: 0, 
+              bottom: 0, 
+              backgroundColor: 'rgba(15, 23, 42, 0.6)',
+              backdropFilter: 'blur(3px)'
+            }}
             onClick={() => setIsDrawerOpen(false)}
           />
 
-          {/* Drawer Panel (Slides in from the Right) */}
-          <div className="fixed inset-y-0 right-0 z-50 w-72 max-w-[85vw] bg-white shadow-2xl flex flex-col justify-between transform transition-transform duration-300 ease-in-out">
+          {/* Drawer Panel (Solid White, Slides in from Right) */}
+          <div 
+            className="fixed top-0 right-0 bottom-0 w-72 max-w-[85vw] shadow-2xl flex flex-col justify-between"
+            style={{ 
+              position: 'fixed',
+              top: 0, 
+              right: 0, 
+              bottom: 0, 
+              width: '290px',
+              maxWidth: '85vw',
+              height: '100vh',
+              backgroundColor: '#ffffff',
+              boxShadow: '-8px 0 30px rgba(0,0,0,0.3)',
+              zIndex: 100000,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              overflowY: 'auto'
+            }}
+          >
             {/* Drawer Header */}
             <div>
-              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+              <div 
+                className="flex items-center justify-between px-5 py-4"
+                style={{ borderBottom: '1px solid #e2e8f0', backgroundColor: '#ffffff' }}
+              >
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs">
                     <Building2 className="w-4 h-4" />
                   </div>
                   <span className="font-bold text-slate-900 text-base">Access Twin</span>
                 </div>
                 <button
                   onClick={() => setIsDrawerOpen(false)}
-                  className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+                  className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
+                  style={{ border: '1px solid #e2e8f0' }}
                   aria-label="Close menu"
                 >
                   <X className="w-4 h-4" />
@@ -263,11 +299,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <button
                       key={item.id}
                       onClick={() => handleTabClick(item.id)}
-                      className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                      className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
                         isActive
                           ? 'bg-blue-50 text-blue-700 font-semibold'
                           : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
                       }`}
+                      style={isActive ? { backgroundColor: '#eff6ff', color: '#1d4ed8' } : {}}
                     >
                       <Icon className={`w-4 h-4 ${isActive ? 'text-blue-600' : 'text-slate-400'}`} />
                       <span>{item.label}</span>
@@ -275,54 +312,60 @@ export const Navbar: React.FC<NavbarProps> = ({
                   );
                 })}
 
-                <div className="my-2 border-t border-slate-100" />
+                <div className="my-2" style={{ borderTop: '1px solid #f1f5f9' }} />
 
                 {/* TwinGram in Drawer */}
                 <button
                   onClick={() => handleTabClick('twingram')}
-                  className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
                     activeTab === 'twingram'
                       ? 'bg-purple-50 text-purple-700 font-semibold'
                       : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
                   }`}
+                  style={activeTab === 'twingram' ? { backgroundColor: '#faf5ff', color: '#7e22ce' } : {}}
                 >
                   <Camera className="w-4 h-4 text-purple-600" />
                   <span>TwinGram Feed</span>
                 </button>
 
                 {/* Sign In / Account */}
-                {session ? (
-                  <div className="pt-1">
+                <div className="pt-1">
+                  {session ? (
                     <UserMenu 
                       user={session.user} 
                       profile={profile} 
                       setActiveTab={(tab) => handleTabClick(tab)} 
                     />
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => {
-                      onOpenAuth();
-                      setIsDrawerOpen(false);
-                    }}
-                    className="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all"
-                  >
-                    <User className="w-4 h-4 text-blue-600" />
-                    <span>Sign In to Account</span>
-                  </button>
-                )}
+                  ) : (
+                    <button
+                      onClick={() => {
+                        onOpenAuth();
+                        setIsDrawerOpen(false);
+                      }}
+                      className="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all cursor-pointer"
+                      style={{ backgroundColor: '#eff6ff', color: '#1d4ed8' }}
+                    >
+                      <User className="w-4 h-4 text-blue-600" />
+                      <span>Sign In to Account</span>
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 
             {/* Drawer Bottom Action (Admin / Sign Out) */}
-            <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+            <div 
+              className="p-4"
+              style={{ borderTop: '1px solid #e2e8f0', backgroundColor: '#f8fafc' }}
+            >
               {isAdminLoggedIn ? (
                 <button
                   onClick={() => {
                     onLogoutAdmin?.();
                     setIsDrawerOpen(false);
                   }}
-                  className="w-full flex items-center justify-center space-x-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold text-xs py-2.5 px-4 rounded-xl transition-all"
+                  className="w-full flex items-center justify-center space-x-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold text-xs py-2.5 px-4 rounded-xl transition-all cursor-pointer"
+                  style={{ backgroundColor: '#fff1f2', color: '#be123c', border: '1px solid #fecdd3' }}
                 >
                   <ShieldCheck className="w-4 h-4 text-rose-600" />
                   <span>Sign Out of Admin Mode</span>
@@ -330,15 +373,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               ) : (
                 <button
                   onClick={() => handleTabClick('admin')}
-                  className="w-full flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs py-2.5 px-4 rounded-xl shadow-xs transition-all"
+                  className="w-full flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs py-2.5 px-4 rounded-xl shadow-xs transition-all cursor-pointer"
+                  style={{ backgroundColor: '#0f172a', color: '#ffffff' }}
                 >
                   <Lock className="w-3.5 h-3.5" />
-                  <span>Admin Login</span>
+                  <span>Admin Login Portal</span>
                 </button>
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </header>
   );
