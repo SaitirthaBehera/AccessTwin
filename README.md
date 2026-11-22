@@ -14,6 +14,7 @@
 ---
 
 ## 📌 Links & Resources
+* **🌐 Live Web Application:** [access-twin-jade.vercel.app](https://access-twin-jade.vercel.app)
 * **🎥 Live Demo Video:** [Click here to watch](https://youtu.be/cX1xIBF4Xcw?si=ZLj8DDvy2Krl5lR5)
 * **📑 Pitch Deck / Presentation:** [View PPT Here](https://github.com/user-attachments/files/31342501/IDEATHON.PPT.pdf)
 
@@ -46,10 +47,14 @@ In India, millions of citizens with physical or visual impairments struggle to n
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="https://github.com/user-attachments/assets/e67b5f68-5fd0-4d6d-80d4-dfd3ac2158b5" width="100%" alt="3D Digital Twin" />
+      <a href="https://github.com/user-attachments/assets/e67b5f68-5fd0-4d6d-80d4-dfd3ac2158b5" target="_blank">
+        <img src="https://github.com/user-attachments/assets/e67b5f68-5fd0-4d6d-80d4-dfd3ac2158b5" width="100%" alt="3D Digital Twin" />
+      </a>
     </td>
     <td width="50%" align="center">
-      <img src="https://github.com/user-attachments/assets/4dbe8b9f-d91d-4e43-b645-0ec40f446e5e" width="100%" alt="Live Crowd-Aware Navigation" />
+      <a href="https://github.com/user-attachments/assets/4dbe8b9f-d91d-4e43-b645-0ec40f446e5e" target="_blank">
+        <img src="https://github.com/user-attachments/assets/4dbe8b9f-d91d-4e43-b645-0ec40f446e5e" width="100%" alt="Live Crowd-Aware Navigation" />
+      </a>
     </td>
   </tr>
   <tr>
@@ -58,10 +63,14 @@ In India, millions of citizens with physical or visual impairments struggle to n
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="https://github.com/user-attachments/assets/2bc25fa2-aa4e-4e72-9c6b-575c89cbc8a3" width="100%" alt="TwinGram Feed" />
+      <a href="https://github.com/user-attachments/assets/2bc25fa2-aa4e-4e72-9c6b-575c89cbc8a3" target="_blank">
+        <img src="https://github.com/user-attachments/assets/2bc25fa2-aa4e-4e72-9c6b-575c89cbc8a3" width="100%" alt="TwinGram Feed" />
+      </a>
     </td>
     <td width="50%" align="center">
-      <img src="https://github.com/user-attachments/assets/d3fef20a-043d-4b2c-86ca-c4633cddad2f" width="100%" alt="AI Detection" />
+      <a href="https://github.com/user-attachments/assets/d3fef20a-043d-4b2c-86ca-c4633cddad2f" target="_blank">
+        <img src="https://github.com/user-attachments/assets/d3fef20a-043d-4b2c-86ca-c4633cddad2f" width="100%" alt="AI Detection" />
+      </a>
     </td>
   </tr>
 </table>
