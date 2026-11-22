@@ -128,9 +128,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <sup className="text-base sm:text-lg font-extrabold text-blue-600 tracking-tight ml-0.5 -top-1.5 sm:-top-2">
                   Twin
                 </sup>
-                <span className="ml-1.5 -translate-y-1.5 sm:-translate-y-2 bg-blue-50/90 text-blue-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-blue-200/80 shadow-2xs">
-                  v2.0
-                </span>
               </div>
               <p className="text-[11px] sm:text-[12.5px] text-slate-500 font-medium tracking-tight mt-0.5 hidden sm:block">
                 Making Every Building Accessible.
@@ -285,7 +282,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <div className="flex items-baseline leading-none">
                     <span className="font-black text-slate-950 text-base">Access</span>
                     <sup className="font-extrabold text-blue-600 text-xs ml-0.5 -top-1">Twin</sup>
-                    <span className="ml-1 -translate-y-1 bg-blue-50 text-blue-600 text-[9px] font-bold px-1.5 py-0.2 rounded-full border border-blue-200">v2.0</span>
                   </div>
                 </div>
                 <button
