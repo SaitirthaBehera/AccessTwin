@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { 
   Building2, 
@@ -45,7 +45,25 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAuth,
   profile
 }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Close drawer on resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) setIsDrawerOpen(false);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Prevent body scroll when drawer is open
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isDrawerOpen]);
 
   const navItems = [
     { id: 'dashboard', label: 'Home', icon: Building2 },
@@ -55,6 +73,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'navigation', label: 'Accessible Route', icon: Navigation },
     { id: 'admin', label: 'Admin Dashboard', icon: ShieldCheck },
   ];
+
+  const handleTabClick = (tabId: string) => {
+    setActiveTab(tabId);
+    setIsDrawerOpen(false);
+  };
 
   return (
     <header id="main-navbar" className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
@@ -88,10 +111,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Main Header Row */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+          {/* Left: Logo */}
           <div 
             className="flex items-center space-x-2 sm:space-x-3 cursor-pointer shrink-0" 
-            onClick={() => setActiveTab('dashboard')}
+            onClick={() => handleTabClick('dashboard')}
           >
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
               <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -110,9 +133,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Controls: Building Selector + Desktop Buttons + Mobile Hamburger */}
+          {/* Right Controls */}
           <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* ITER C BLOCK Dropdown - Stays outside on both Mobile and Desktop! */}
+            {/* ITER C BLOCK Dropdown (Always visible outside on both Mobile and Desktop) */}
             <div className="shrink-0">
               <BuildingSelector 
                 selectedBuildingId={selectedBuildingId}
@@ -121,7 +144,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               />
             </div>
             
-            {/* Desktop Buttons (Hidden on mobile) */}
+            {/* Desktop Only Buttons */}
             <div className="hidden md:flex items-center space-x-3">
               <button
                 id="btn-nav-twingram"
@@ -167,87 +190,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* Mobile Hamburger Button (Visible only on mobile) */}
+            {/* Mobile Hamburger Button (☰) */}
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => setIsDrawerOpen(true)}
               className="md:hidden flex items-center justify-center p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-colors cursor-pointer"
-              aria-label="Toggle Navigation Menu"
+              aria-label="Open Navigation Drawer"
             >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5 text-slate-700" />
-              ) : (
-                <Menu className="w-5 h-5 text-slate-700" />
-              )}
+              <Menu className="w-5 h-5 text-slate-700" />
             </button>
           </div>
         </div>
 
-        {/* Mobile Slide-Down Drawer */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 bg-white/98 backdrop-blur-md px-4 py-3 space-y-2.5 shadow-lg rounded-b-xl animate-in slide-in-from-top-2">
-            <button
-              onClick={() => {
-                setActiveTab('twingram');
-                setIsMobileMenuOpen(false);
-              }}
-              className="w-full flex items-center space-x-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm px-3.5 py-2.5 rounded-lg border border-slate-200 transition-all cursor-pointer"
-            >
-              <Camera className="w-4 h-4 text-indigo-600" />
-              <span>TwinGram Community Feed</span>
-            </button>
-
-            {session ? (
-              <div className="pt-1">
-                <UserMenu 
-                  user={session.user} 
-                  profile={profile} 
-                  setActiveTab={(tab) => {
-                    setActiveTab(tab);
-                    setIsMobileMenuOpen(false);
-                  }} 
-                />
-              </div>
-            ) : (
-              <button
-                onClick={() => {
-                  onOpenAuth();
-                  setIsMobileMenuOpen(false);
-                }}
-                className="w-full flex items-center space-x-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-sm px-3.5 py-2.5 rounded-lg border border-blue-200 transition-all cursor-pointer"
-              >
-                <User className="w-4 h-4 text-blue-600" />
-                <span>Sign In to Account</span>
-              </button>
-            )}
-
-            {isAdminLoggedIn ? (
-              <button
-                onClick={() => {
-                  onLogoutAdmin?.();
-                  setIsMobileMenuOpen(false);
-                }}
-                className="w-full flex items-center space-x-2.5 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 font-semibold text-sm px-3.5 py-2.5 rounded-lg transition-all cursor-pointer"
-              >
-                <ShieldCheck className="w-4 h-4 text-rose-600" />
-                <span>Sign Out of Admin Mode</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  setActiveTab('admin');
-                  setIsMobileMenuOpen(false);
-                }}
-                className="w-full flex items-center space-x-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm px-3.5 py-2.5 rounded-lg border border-slate-200 transition-all cursor-pointer"
-              >
-                <Lock className="w-4 h-4 text-slate-500" />
-                <span>Admin Login Portal</span>
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Navigation Tabs Bar (Scrollable on mobile) */}
-        <nav id="nav-tab-list" className="flex items-center space-x-1 overflow-x-auto no-scrollbar border-t border-slate-100 py-2 text-xs font-medium">
+        {/* Desktop Navigation Tabs Bar */}
+        <nav id="nav-tab-list" className="hidden md:flex items-center space-x-1 border-t border-slate-100 py-2 text-xs font-medium">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -269,6 +224,122 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
         </nav>
       </div>
+
+      
+      {isDrawerOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          {/* Dark Backdrop Overlay */}
+          <div 
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity duration-300"
+            onClick={() => setIsDrawerOpen(false)}
+          />
+
+          {/* Drawer Panel (Slides in from the Right) */}
+          <div className="fixed inset-y-0 right-0 z-50 w-72 max-w-[85vw] bg-white shadow-2xl flex flex-col justify-between transform transition-transform duration-300 ease-in-out">
+            {/* Drawer Header */}
+            <div>
+              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+                    <Building2 className="w-4 h-4" />
+                  </div>
+                  <span className="font-bold text-slate-900 text-base">Access Twin</span>
+                </div>
+                <button
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+                  aria-label="Close menu"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Navigation Items List */}
+              <div className="px-3 py-4 space-y-1">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleTabClick(item.id)}
+                      className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                        isActive
+                          ? 'bg-blue-50 text-blue-700 font-semibold'
+                          : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                      }`}
+                    >
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-blue-600' : 'text-slate-400'}`} />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+
+                <div className="my-2 border-t border-slate-100" />
+
+                {/* TwinGram in Drawer */}
+                <button
+                  onClick={() => handleTabClick('twingram')}
+                  className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                    activeTab === 'twingram'
+                      ? 'bg-purple-50 text-purple-700 font-semibold'
+                      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  <Camera className="w-4 h-4 text-purple-600" />
+                  <span>TwinGram Feed</span>
+                </button>
+
+                {/* Sign In / Account */}
+                {session ? (
+                  <div className="pt-1">
+                    <UserMenu 
+                      user={session.user} 
+                      profile={profile} 
+                      setActiveTab={(tab) => handleTabClick(tab)} 
+                    />
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      onOpenAuth();
+                      setIsDrawerOpen(false);
+                    }}
+                    className="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all"
+                  >
+                    <User className="w-4 h-4 text-blue-600" />
+                    <span>Sign In to Account</span>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Drawer Bottom Action (Admin / Sign Out) */}
+            <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+              {isAdminLoggedIn ? (
+                <button
+                  onClick={() => {
+                    onLogoutAdmin?.();
+                    setIsDrawerOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center space-x-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold text-xs py-2.5 px-4 rounded-xl transition-all"
+                >
+                  <ShieldCheck className="w-4 h-4 text-rose-600" />
+                  <span>Sign Out of Admin Mode</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleTabClick('admin')}
+                  className="w-full flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs py-2.5 px-4 rounded-xl shadow-xs transition-all"
+                >
+                  <Lock className="w-3.5 h-3.5" />
+                  <span>Admin Login</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
