@@ -114,21 +114,25 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between h-16">
           {/* Left: Logo */}
           <div 
-            className="flex items-center space-x-2 sm:space-x-3 cursor-pointer shrink-0" 
+            className="flex items-center space-x-2.5 sm:space-x-3 cursor-pointer shrink-0 select-none" 
             onClick={() => handleTabClick('dashboard')}
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-              <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-blue-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25 shrink-0">
+              <Building2 className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2]" />
             </div>
-            <div>
-              <div className="flex items-center space-x-1">
-                <span className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">Access</span>
-                <span className="text-lg sm:text-xl font-bold text-blue-600 tracking-tight">Twin</span>
-                <span className="bg-blue-50 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-blue-200">
+            <div className="flex flex-col justify-center">
+              <div className="flex items-baseline leading-none">
+                <span className="text-2xl sm:text-[28px] font-black text-slate-950 tracking-tight">
+                  Access
+                </span>
+                <sup className="text-base sm:text-lg font-extrabold text-blue-600 tracking-tight ml-0.5 -top-1.5 sm:-top-2">
+                  Twin
+                </sup>
+                <span className="ml-1.5 -translate-y-1.5 sm:-translate-y-2 bg-blue-50/90 text-blue-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-blue-200/80 shadow-2xs">
                   v2.0
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium hidden sm:block">
+              <p className="text-[11px] sm:text-[12.5px] text-slate-500 font-medium tracking-tight mt-0.5 hidden sm:block">
                 Making Every Building Accessible.
               </p>
             </div>
@@ -275,10 +279,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                 style={{ borderBottom: '1px solid #e2e8f0', backgroundColor: '#ffffff' }}
               >
                 <div className="flex items-center space-x-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs">
-                    <Building2 className="w-4 h-4" />
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-blue-500 flex items-center justify-center text-white shadow-xs">
+                    <Building2 className="w-4 h-4 stroke-[2.2]" />
                   </div>
-                  <span className="font-bold text-slate-900 text-base">Access Twin</span>
+                  <div className="flex items-baseline leading-none">
+                    <span className="font-black text-slate-950 text-base">Access</span>
+                    <sup className="font-extrabold text-blue-600 text-xs ml-0.5 -top-1">Twin</sup>
+                    <span className="ml-1 -translate-y-1 bg-blue-50 text-blue-600 text-[9px] font-bold px-1.5 py-0.2 rounded-full border border-blue-200">v2.0</span>
+                  </div>
                 </div>
                 <button
                   onClick={() => setIsDrawerOpen(false)}
